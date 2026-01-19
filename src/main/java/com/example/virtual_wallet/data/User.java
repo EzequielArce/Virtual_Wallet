@@ -2,10 +2,14 @@ package com.example.virtual_wallet.data;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -14,8 +18,8 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private String role;
-    private ArrayList<Account> accounts = new ArrayList<>();
+    private String role; 
+    private @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) List<Account> accounts = new ArrayList<>();
 
     public User(){}
     
@@ -25,8 +29,8 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.accounts.add(new Account("ARS"));
-        this.accounts.add(new Account("USD"));
+        this.accounts.add(new Account("ARS",this));
+        this.accounts.add(new Account("USD",this));
     }
     
     //From here there is equals, hascode, to string, getters and setters =) Look if interested
@@ -90,7 +94,7 @@ public class User {
         this.role = role;
     }
 
-    public ArrayList<Account> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
